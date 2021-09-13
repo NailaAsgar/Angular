@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Promotion} from '../shared/promotion';
 import {PROMOTIONS} from '../shared/promotions';
+import {Observable ,of } from 'rxjs';
+import {delay} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -9,15 +11,15 @@ export class PromotionService {
 
   constructor() { }
 
-  getPromotions() : Promotion[] {
-    return PROMOTIONS;
-  }    //This is a new method which will return array of dishes. It will return dishes constant which we have imported
+  getPromotions() : Observable<Promotion[]> {
+    return of (PROMOTIONS).pipe(delay(2000));
+  }   
 
-  getPromotion(id:string): Promotion{
-    return PROMOTIONS.filter((promo) =>(promo.id === id))[0];  //Extract specific dish from the array and return the dish. Will return a boolean
+  getPromotion(id:string): Observable<Promotion>{ 
+    return of(PROMOTIONS.filter((promo) =>(promo.id === id))[0]).pipe(delay(2000));  
   }
 
-  getFeaturedPromotion(): Promotion {
-    return PROMOTIONS.filter((promo) => promo.featured)[0];  //featured is aleady boolean. from all the dishes which is true, that one will be filtered out. 
+  getFeaturedPromotion(): Observable<Promotion> {
+    return  of(PROMOTIONS.filter((promo) => promo.featured)[0]).pipe(delay(2000)); //featured is aleady boolean. from all the dishes which is true, that one will be filtered out. 
   }
 }
